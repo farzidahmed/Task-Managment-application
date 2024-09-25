@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:task_managment/views/splash_screen.dart';
 
+import 'utills/apps_colors.dart';
+
 class TaskManagment extends StatefulWidget {
   const TaskManagment({super.key});
 
@@ -13,11 +15,43 @@ class _TaskManagmentState extends State<TaskManagment> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        textTheme: TextTheme()
+        colorSchemeSeed: Appscolor.themecolor,
+        textTheme: const TextTheme(),
+        inputDecorationTheme:_inputDecorationTheme(),
+        elevatedButtonTheme: _elevatedButtonThemeData()
       ),
-      home:SplashScreen(),
+      home:const SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
 
+  }
+  ElevatedButtonThemeData _elevatedButtonThemeData(){
+    return ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Appscolor.themecolor,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+            fixedSize: const Size.fromWidth(double.maxFinite),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8)
+            )
+        )
+    );
+  }
+  InputDecorationTheme _inputDecorationTheme(){
+    return  InputDecorationTheme(
+        fillColor: Colors.white,
+        filled: true,
+        border:_inputBorder(),
+      enabledBorder: _inputBorder(),
+      focusedBorder: _inputBorder(),
+      errorBorder: _inputBorder(),
+    );
+  }
+  OutlineInputBorder _inputBorder(){
+    return  OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(8)
+    );
   }
 }
