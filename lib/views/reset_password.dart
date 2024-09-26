@@ -1,21 +1,19 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:task_managment/global_widget/background_image.dart';
 import 'package:task_managment/utills/apps_colors.dart';
-import 'package:task_managment/views/reset_password.dart';
 
+import 'forgot_pass_otp.dart';
 import 'sign_in_screen.dart';
 
-
-class ForgotPassOtp extends StatefulWidget {
-  const ForgotPassOtp({super.key});
+class ResetPassword extends StatefulWidget {
+  const ResetPassword({super.key});
 
   @override
-  State<ForgotPassOtp> createState() => _ForgotPassOtpState();
+  State<ResetPassword> createState() => _ResetPasswordState();
 }
 
-class _ForgotPassOtpState extends State<ForgotPassOtp> {
+class _ResetPasswordState extends State<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     TextTheme texttheme = Theme.of(context).textTheme;
@@ -24,29 +22,28 @@ class _ForgotPassOtpState extends State<ForgotPassOtp> {
         body: BackgroundImage(child:
         Center(
           child: SingleChildScrollView(
-            padding: EdgeInsets.only(
-                left: 10.0,
-                right: 10.0,
+            padding: EdgeInsets.only(left: 10.0,
                 top: 10.0,
+                right: 10.0,
                 bottom: 10.0+MediaQuery.of(context).viewInsets.bottom),
             child: Padding(
               padding: const EdgeInsets.all(50),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("PIN Verification",style: texttheme.displaySmall?.
+                  Text("Set Password",style: texttheme.displaySmall?.
                   copyWith(fontWeight: FontWeight.w500),),
                   const SizedBox(height: 16,),
-                  Text("A 6 digits verification otp has been sent to your emaill address",
+                  Text("Minimum length password 8 character with Latter and number combination",
                     style: texttheme.titleSmall?.
                     copyWith(color: Colors.grey),),
                   const SizedBox(height:20),
-                  _buildforgotPassForm(),  //return widgrt method signin form
+                  _buildresetPassForm(),  //return widgrt method signin form
                   const SizedBox(height:48),
                   Center(
                     child: Column(
                       children: [
-                        _buildforgotPassSection()// return widget method sign up button
+                        _buildresetPassSection()// return widget method sign up button
                       ],
                     ),
                   )
@@ -63,32 +60,23 @@ class _ForgotPassOtpState extends State<ForgotPassOtp> {
 
 
 // textformfiled er text
-  Widget _buildforgotPassForm (){
+  Widget _buildresetPassForm (){
     return    Column(
       children: [
-        PinCodeTextField(
-          keyboardType: TextInputType.number,
-          length: 6,
-          obscureText: true,
-          animationType: AnimationType.fade,
-          pinTheme: PinTheme(
-            shape: PinCodeFieldShape.box,
-            borderRadius: BorderRadius.circular(5),
-            fieldHeight: 50,
-            fieldWidth: 40,
-            activeFillColor: Colors.white,
-              selectedColor: Colors.white,
-            inactiveColor: Colors.white,
-            inactiveFillColor:Colors.white ,
+        TextFormField(
+          keyboardType: TextInputType.emailAddress,
+          decoration: const InputDecoration(
+              hintText: "Password"
           ),
-          animationDuration: Duration(milliseconds: 300),
-          // backgroundColor: Colors.blue.shade50,
-          backgroundColor: Colors.transparent,
-
-          enableActiveFill: true,
-           appContext: context,
         ),
-         SizedBox(height: 16,),
+        const SizedBox(height: 16,),
+        TextFormField(
+          keyboardType: TextInputType.emailAddress,
+          decoration: const InputDecoration(
+              hintText: "Confirm Password"
+          ),
+        ),
+        const SizedBox(height: 24,),
         ElevatedButton(
             onPressed:_onTapNextPage,
             child: const Icon(Icons.arrow_circle_right_outlined)),
@@ -97,12 +85,12 @@ class _ForgotPassOtpState extends State<ForgotPassOtp> {
   }
 
   void _onTapNextPage(){
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPassOtp()));
     // TODO:implementation on tap next page
-    Navigator.push(context,MaterialPageRoute(builder: (context)=>const ResetPassword()));
   }
 
   // don't have an account er text
-  Widget  _buildforgotPassSection(){
+  Widget  _buildresetPassSection(){
     return  RichText(text:  TextSpan(
         style: TextStyle(
             color: Colors.black,
@@ -124,8 +112,7 @@ class _ForgotPassOtpState extends State<ForgotPassOtp> {
 
   // click signup page button and goto next page
   void _onTapforgotPass(){
-   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const SignInScreen()),
-           (_)=>false);
+    Navigator.push(context,MaterialPageRoute(builder: (context)=>SignInScreen()));
   }
 
 

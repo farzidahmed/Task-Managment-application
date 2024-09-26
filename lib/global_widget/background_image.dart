@@ -14,16 +14,15 @@ final Widget child;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
-          children:[
-            Positioned.fill(
-              child: SvgPicture.asset(AssetsPath.backgroudSvg,
-                width:sizescreen.width,
-                height:sizescreen.height,
-                fit: BoxFit.cover
-              ),
-            ),
-            SafeArea(child: child),
-          ]
+        children: [
+          SvgPicture.asset(
+            AssetsPath.backgroudSvg,
+            width: sizescreen.width,
+            height: sizescreen.height,
+            fit: BoxFit.cover,
+          ),
+          SafeArea(child: child),
+        ],
       ),
     );
   }

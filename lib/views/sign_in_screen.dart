@@ -18,30 +18,39 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     TextTheme texttheme = Theme.of(context).textTheme;
     return  Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BackgroundImage(child:
-      SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(50),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Get Started With",style: texttheme.displaySmall?.
-              copyWith(fontWeight: FontWeight.w500),),
-              const SizedBox(height: 16,),
-              _buildSigninForm(),  //return widgrt method signin form
-              const SizedBox(height:20),
+      Center(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+              left: 10.0,right: 10.0,
+              top: 10.0,bottom: 10.0+MediaQuery.of(context).viewInsets.bottom
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(50),
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Get Started With",style: texttheme.displaySmall?.
+                  copyWith(fontWeight: FontWeight.w500),),
+                  const SizedBox(height: 16,),
+                  _buildSigninForm(),  //return widgrt method signin form
+                  const SizedBox(height:20),
 
-              Center(
-                child: Column(
-                  children: [
-                    TextButton(onPressed: _onTapForgotButton,
-                        child: const Text("Forgot password",style: TextStyle(color:Colors.grey),)),
-
-                    _buildSigninSection()// return widget method sign up button
-                  ],
-                ),
-              )
-            ],
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(onPressed: _onTapForgotButton,
+                            child: const Text("Forgot password",style: TextStyle(color:Colors.grey),)),
+                        _buildSigninSection()// return widget method sign up button
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       )

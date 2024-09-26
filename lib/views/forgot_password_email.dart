@@ -18,30 +18,38 @@ class _SignInScreenForgotPasswordEmailState extends State<ForgotPasswordEmail> {
   Widget build(BuildContext context) {
     TextTheme texttheme = Theme.of(context).textTheme;
     return  Scaffold(
+      resizeToAvoidBottomInset: false,
         body: BackgroundImage(child:
-        SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(50),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Your Email Address",style: texttheme.displaySmall?.
-                copyWith(fontWeight: FontWeight.w500),),
-                const SizedBox(height: 16,),
-                Text("A 6 digits verification otp will be sent to your emaill address",
-                  style: texttheme.titleSmall?.
-                copyWith(color: Colors.grey),),
-                const SizedBox(height:20),
-                _buildforgotPassForm(),  //return widgrt method signin form
-                const SizedBox(height:48),
-                Center(
-                  child: Column(
-                    children: [
-                      _buildforgotPassSection()// return widget method sign up button
-                    ],
-                  ),
-                )
-              ],
+        Center(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bottom: 10.1+MediaQuery.of(context).viewInsets.bottom),
+            child: Padding(
+              padding: const EdgeInsets.all(50),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Your Email Address",style: texttheme.displaySmall?.
+                  copyWith(fontWeight: FontWeight.w500),),
+                  const SizedBox(height: 16,),
+                  Text("A 6 digits verification otp will be sent to your emaill address",
+                    style: texttheme.titleSmall?.
+                  copyWith(color: Colors.grey),),
+                  const SizedBox(height:20),
+                  _buildforgotPassForm(),  //return widgrt method signin form
+                  const SizedBox(height:48),
+                  Center(
+                    child: Column(
+                      children: [
+                        _buildforgotPassSection()// return widget method sign up button
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         )
@@ -87,7 +95,7 @@ class _SignInScreenForgotPasswordEmailState extends State<ForgotPasswordEmail> {
         text: "Have an account ?",
         children: [
           TextSpan(
-              text: "Sign Up ",
+              text: "Sign In ",
               style: TextStyle(color: Appscolor.themecolor),
               recognizer: TapGestureRecognizer()
                 ..onTap = _onTapforgotPass
