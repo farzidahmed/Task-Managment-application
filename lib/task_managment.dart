@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_managment/views/splash_screen.dart';
+import 'package:task_managment/views/Splash_screen/splash_screen.dart';
 
 import 'utills/apps_colors.dart';
 

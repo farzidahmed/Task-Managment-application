@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:task_managment/global_widget/background_image.dart';
 import 'package:task_managment/utills/apps_colors.dart';
-import 'package:task_managment/views/forgot_password_email.dart';
+import 'package:task_managment/views/Auth_screen/forgot_password_email.dart';
 
 import 'sign_up_screen.dart';
 

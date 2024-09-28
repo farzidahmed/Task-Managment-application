@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:task_managment/global_widget/background_image.dart';
 import 'package:task_managment/utills/apps_colors.dart';
-import 'package:task_managment/views/reset_password.dart';
+import 'package:task_managment/views/Auth_screen/reset_password.dart';
 
 import 'sign_in_screen.dart';
 
