@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:task_managment/global_widget/background_image.dart';
+import 'package:task_managment/global_widget/navbar_screen.dart';
 import 'package:task_managment/utills/apps_colors.dart';
 import 'package:task_managment/views/Auth_screen/forgot_password_email.dart';
 
@@ -88,6 +89,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   void _onTapNextPage(){
     // TODO:implementation on tap next page
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context)=>const NavbarScreen()), (value)=>false);
   }
 
   // click this button and go forgot page
