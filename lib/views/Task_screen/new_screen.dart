@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:task_managment/views/Task_screen/add_task_screen.dart';
-
+import '../../global_widget/task_list_card.dart';
 import '../../global_widget/task_summerry_card.dart';
 
 class NewScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class _NewScreenState extends State<NewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const Column(
+      body:  const Column(
         children: [
           Padding(
             padding: EdgeInsets.all(8.0),
@@ -31,7 +31,9 @@ class _NewScreenState extends State<NewScreen> {
                 ],
               ),
             ),
-          )
+          ),
+          // task list card
+          task_list_card(buttonname: 'New', chipcolor:  Colors.greenAccent,)
         ],
       ),
         floatingActionButton: FloatingActionButton(onPressed: _buildAddScreen,
@@ -43,5 +45,7 @@ class _NewScreenState extends State<NewScreen> {
   void _buildAddScreen(){
     Navigator.push(context, MaterialPageRoute(builder: (context)=>const AddTaskScreen()));
   }
+  
 }
+
 
