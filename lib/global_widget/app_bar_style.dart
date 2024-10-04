@@ -10,50 +10,56 @@
 import 'package:flutter/material.dart';
 import 'package:task_managment/utills/apps_colors.dart';
 import 'package:task_managment/views/Auth_screen/sign_in_screen.dart';
+import 'package:task_managment/views/profile_screen/profile_screen.dart';
 
 class AppBarStyle extends StatelessWidget implements PreferredSizeWidget {
   const AppBarStyle({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  AppBar(
-        backgroundColor: Appscolor.themecolor,
-        title: Padding(
-          padding: const EdgeInsets.only(left:10.0),
-          child: Row(
-            children: [
-               CircleAvatar(
-                radius: 20,
-              // backgroundImage: Image.asset("assets/images/rimon.jpg"),
-                backgroundColor: Colors.white,
-              ),
-              const SizedBox(width: 20,),
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Farzid Ahmed",style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white
-                    ),),
-                    Text("rimonraj670@gmail.com",style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white
-                    ),),
-                  ],
+    return  GestureDetector(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProfileScreen()));
+      },
+      child: AppBar(
+          backgroundColor: Appscolor.themecolor,
+          title: Padding(
+            padding: const EdgeInsets.only(left:10.0),
+            child: Row(
+              children: [
+                 const CircleAvatar(
+                  radius: 20,
+                backgroundImage: AssetImage("assets/images/rimon.jpg"),
+                 // backgroundColor: Colors.white,
                 ),
-              ),
-              IconButton(onPressed:(){
-                Navigator.pushAndRemoveUntil(
-                    context, MaterialPageRoute(builder: (context)=> SignInScreen()),(value)=>false);
-              },
-                  icon: const Icon(Icons.logout,color: Colors.white,))
-            ],
+                const SizedBox(width: 20,),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Farzid Ahmed",style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white
+                      ),),
+                      Text("rimonraj670@gmail.com",style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
+                      ),),
+                    ],
+                  ),
+                ),
+                IconButton(onPressed:(){
+                  Navigator.pushAndRemoveUntil(
+                      context, MaterialPageRoute(builder: (context)=> const SignInScreen()),(value)=>false);
+                },
+                    icon: const Icon(Icons.logout,color: Colors.white,))
+              ],
+            ),
           ),
         ),
-      );
+    );
   }
   //
   // void _buidLogoutButton(){

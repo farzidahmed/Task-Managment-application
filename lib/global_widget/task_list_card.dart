@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../utills/apps_colors.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
-class task_list_card extends StatelessWidget {
+class task_list_card extends StatefulWidget {
   const task_list_card({
     super.key,
     required this.buttonname,
@@ -12,6 +15,12 @@ class task_list_card extends StatelessWidget {
   final String buttonname;
   final Color chipcolor;
   final Color? bordersidecolor;
+
+  @override
+  State<task_list_card> createState() => _task_list_cardState();
+}
+
+class _task_list_cardState extends State<task_list_card> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -51,7 +60,7 @@ class task_list_card extends StatelessWidget {
           );
         },
         separatorBuilder: (BuildContext context, int index) {
-          return SizedBox(height: 2);
+          return const SizedBox(height: 2);
         },
       ),
     );
@@ -65,19 +74,20 @@ class task_list_card extends StatelessWidget {
       children: [
         Chip(
           label: Text(
-            "$buttonname",
-            style: TextStyle(color: Colors.black),
+            "${widget.buttonname}",
+            style: const TextStyle(color: Colors.black),
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          backgroundColor: chipcolor,
-          side: BorderSide(color: bordersidecolor ?? Appscolor.themecolor),
+          backgroundColor: widget.chipcolor,
+          side: BorderSide(color: widget.bordersidecolor ?? Appscolor.themecolor),
         ),
         wrap_Icon_Button()
       ],
     );
   }
+
   // this method used to wrap with icon button
   Widget wrap_Icon_Button() {
     return Wrap(
@@ -98,7 +108,70 @@ class task_list_card extends StatelessWidget {
   //edit Icon button
   void _buildEditIconButton() {
     //TODO: implements build edit icon button
+    showDialog(context: context, builder: (context){
+      return AlertDialog(
+        backgroundColor:Colors.white,
+        shadowColor:Colors.transparent ,
+        title: const Column(
+          children: [
+            Text("Edit Status"),
+            Divider(
+              color: Colors.grey,
+            )
+          ],
+        ),
+        content:
+        //list of widget ...
+        Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+            'New','Completed','Canceled','Progress'].map((e){
+              return ListTile(
+                onTap: (){},
+                title:Text (e),
+              );
+          }).toList()
+        ),
+        actions: [
+          TextButton(onPressed: (){
+            const materialBanner = MaterialBanner(
+              /// need to set following properties for best effect of awesome_snackbar_content
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              forceActionsBelow: true,
+              content: AwesomeSnackbarContent(
+                title: 'Thank you!!',
+                message:
+                'You click cancel button ',
+
+                /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                contentType: ContentType.success,
+                // to configure for material banner
+                inMaterialBanner: true,
+              ),
+              actions: [SizedBox.shrink()],
+            );
+
+            ScaffoldMessenger.of(context)
+              ..hideCurrentMaterialBanner()
+              ..showMaterialBanner(materialBanner);
+
+            Navigator.pop(context);
+          },
+              child: const Text("Cancel",style: TextStyle(
+                fontSize: 16
+              ),)),
+          TextButton(onPressed:(){
+          },
+              child: const Text("okay",style: TextStyle(
+                  fontSize: 20
+              ),)),
+
+        ],
+      );
+    });
   }
+
 //delete Icon button
   void _buildDeletetIconButton() {
     //TODO: implements build edit icon button
