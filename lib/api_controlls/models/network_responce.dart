@@ -8,5 +8,5 @@ class NetworkResponse {
       {required this.isSuccess,
       required this.statusCode,
        this.responseData,
-      this.errormessege = "something went wrong"});
+      this.errormessege = "Something went wrong"});
 }
