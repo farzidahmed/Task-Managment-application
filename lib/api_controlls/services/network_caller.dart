@@ -1,5 +1,6 @@
 //note: http pakeage holo 3rd party api caller
 //api theke jah amra pai taholo decode kora r ja hei ta hoilo encode
+// api er bodyte jodi data pathate hoy tahole key value(Map) use hoy
 
 import 'dart:convert';
 
@@ -10,7 +11,8 @@ import 'package:http/http.dart';
 class NetworkCaller{
   //bar bar jate network response er instance create kora nah lage sei jnno amra static keywork bebohar kori
 // api get korar jonno
-  static Future<NetworkResponse?> getRequest(String url)async{
+// get/ post request a named{}use kora hoy jeno amra dekhte pari kih data pathano hoy
+  static Future<NetworkResponse> getRequest({required String url})async{
     try{
       //kih data gelo ta check korar jonno
       Uri uri = Uri.parse(url);
@@ -40,13 +42,15 @@ class NetworkCaller{
 
   }
   //api post korar jonno
-  static Future<NetworkResponse?> postRequest(String url)async{
+  static Future<NetworkResponse> postRequest(
+      {required String url,Map<String,dynamic>?body }
+      )async{
     try{
       //kih data gelo ta check korar jonno
       Uri uri = Uri.parse(url);
       debugPrint("$url");
       final Response response = await post(uri,
-          headers: {'Content-Type':'application/json'}
+          headers: {'Content-Type':'application/json',},
       );
       printDebug(url,response);
       if(response.statusCode==200){
