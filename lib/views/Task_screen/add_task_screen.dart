@@ -9,6 +9,10 @@ class AddTaskScreen extends StatefulWidget {
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
+  final TextEditingController _textTaskController= TextEditingController();
+  final TextEditingController _textDescription= TextEditingController();
+  final GlobalKey<FormState> _form = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -27,18 +31,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     fontWeight: FontWeight.w600
                   ),),
              const SizedBox(height: 24,),
-                TextFormField(
-                        decoration: const InputDecoration(
-                          hintText: "Add Task",
-                        ),
-                ),
-                const SizedBox(height: 24,),
-                TextFormField(
-                  maxLines: 5,
-                  decoration: const InputDecoration(
-                    hintText: "Description",
-                  ),
-                ),
+                _buildTextField(),
                 const SizedBox(height: 24,),
                 ElevatedButton(onPressed: _buildAddTask,
                     child: const Icon(Icons.arrow_forward_ios)),
@@ -50,8 +43,49 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       ),
     );
   }
+
+  Widget _buildTextField(){
+   return Form(
+     key: _form,
+     child: Column(
+       children: [
+         TextFormField(
+           controller: _textTaskController,
+            decoration: const InputDecoration(
+              hintText: "Add Task",
+            ),
+           validator: (String? value) {
+             if (value?.isEmpty == true) {
+               return 'Enter a text please';
+             }
+             return null;
+           },
+          ),
+        const SizedBox(height: 24,),
+         TextFormField(
+           controller: _textDescription,
+           maxLines: 5,
+           decoration: const InputDecoration(
+             hintText: "Description",
+           ),
+           validator: (String? value) {
+             if (value?.isEmpty == true) {
+               return 'Enter a description please';
+             }
+             return null;
+           },
+         ),
+       ],
+     ),
+   );
+  }
+
   void _buildAddTask(){
     //TODO: implemnets go to newtaskscreen
+    if (!_form.currentState!.validate()) {
+      return;
+    }
     Navigator.pop(context);
   }
+
 }
