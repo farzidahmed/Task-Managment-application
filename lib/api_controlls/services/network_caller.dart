@@ -5,8 +5,13 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:task_managment/controller/auth_controller.dart';
+import 'package:task_managment/task_managment.dart';
+import 'package:task_managment/views/Auth_screen/sign_in_screen.dart';
 
 import '../models/network_responce.dart';
 
@@ -28,6 +33,12 @@ class NetworkCaller {
           responseData: decodeData,
           statusCode: response.statusCode,
         );
+      } else if (response.statusCode == 401) {
+        _movetologin();
+        return NetworkResponse(
+            isSuccess: false,
+            statusCode: response.statusCode,
+            errormessege: 'Unauthenticated!');
       } else {
         return NetworkResponse(
           isSuccess: false,
@@ -47,33 +58,38 @@ class NetworkCaller {
   static Future<NetworkResponse> postRequest(
       {required String url,
       Map<String, dynamic>? body,
-      required Map<String, String> headers}) async {
+      required Map<String, String?> headers}) async {
     try {
       //api te kih data gelo ta check korar jonno
       Uri uri = Uri.parse(url);
-      debugPrint("$url");
-      final Response response = await post(
-        uri,
-        body: jsonEncode(body),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      );
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'token': AuthController.accessToken.toString(),
+      };
+      // debugPrint("$url");
+      printReequest(url, body, headers);
+      final Response response =
+          await post(uri, body: jsonEncode(body), headers: headers);
       printDebug(url, response);
       if (response.statusCode == 200) {
         final decodeData = jsonDecode(response.body);
         if (decodeData['status'] == 'fail') {
           return NetworkResponse(
-            isSuccess: false,
-            statusCode: response.statusCode,
-            errormessege: decodeData['data']
-          );
+              isSuccess: false,
+              statusCode: response.statusCode,
+              errormessege: decodeData['data']);
         }
         return NetworkResponse(
           isSuccess: true,
           responseData: decodeData,
           statusCode: response.statusCode,
         );
+      } else if (response.statusCode == 401) {
+        _movetologin();
+        return NetworkResponse(
+            isSuccess: false,
+            statusCode: response.statusCode,
+            errormessege: 'Unauthenticated!');
       } else {
         return NetworkResponse(
           isSuccess: false,
@@ -89,9 +105,21 @@ class NetworkCaller {
     }
   }
 
+  static void printReequest(
+      String url, Map<String, dynamic>? body, Map<String, dynamic>? headers) {
+    //ai debug er korar karon holo jate amra dekhte console kih data aslo
+    debugPrint("REQUEST:\nURL$url\nBody:$body\nHeaders:$headers");
+  }
+
   static void printDebug(String url, Response response) {
     //ai debug er korar karon holo jate amra dekhte console kih data aslo
     debugPrint(
         "URL$url\nResponse:${response.statusCode}\nBody:${response.body}");
+  }
+
+  static Future<void> _movetologin() async {
+    await AuthController.clearUserdata();
+    Navigator.pushAndRemoveUntil(TaskManagment.navigatorkey.currentContext!,
+        MaterialPageRoute(builder: (context) => SignInScreen()), (p) => false);
   }
 }

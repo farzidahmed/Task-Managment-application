@@ -28,7 +28,7 @@ class AuthController {
   }
 
 // jodi amra log out kori tahole sob data clear kore dibe
-  static Future<void> clearUserdata(String token) async {
+  static Future<void> clearUserdata() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.clear(); // shared preference a string set korar jonno setString bebohar kora hoiche
       accessToken=null;

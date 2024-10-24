@@ -21,6 +21,7 @@ class task_list_card extends StatefulWidget {
 }
 
 class _task_list_cardState extends State<task_list_card> {
+  final List<void> newtask=[];
   @override
   Widget build(BuildContext context) {
     return Expanded(
