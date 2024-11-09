@@ -1,70 +1,68 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-
+import 'package:task_managment/api_controlls/models/task_model.dart';
 import '../utills/apps_colors.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
 class task_list_card extends StatefulWidget {
-  const task_list_card({
+   task_list_card({
     super.key,
     required this.buttonname,
     required this.chipcolor,
     this.bordersidecolor,
+       this.taskModel
   });
   final String buttonname;
   final Color chipcolor;
   final Color? bordersidecolor;
-
+  final TaskModel? taskModel;
   @override
   State<task_list_card> createState() => _task_list_cardState();
 }
 
 class _task_list_cardState extends State<task_list_card> {
-  final List<void> newtask=[];
+  String _selectedStatus ="";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _selectedStatus=widget.taskModel!.status!;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.separated(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Lorem Ipsum is simply dummy",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    const Text(
-                        "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. "),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    const Text("Date:02/10/2024"),
-                    _buildRowChip()
-                  ],
-                ),
+    return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Card(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                  widget.taskModel?.title??"",
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                   Text(
+                      widget.taskModel?.description??""),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                   Text(widget.taskModel?.createdDate??""),
+                  _buildRowChip()
+                ],
               ),
             ),
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(height: 2);
-        },
-      ),
-    );
+          ),
+        );
+
   }
 
 // this method use to chip
@@ -130,6 +128,8 @@ class _task_list_cardState extends State<task_list_card> {
               return ListTile(
                 onTap: (){},
                 title:Text (e),
+                selected: _selectedStatus==e,
+                trailing: _selectedStatus==e? Icon(Icons.check):null,
               );
           }).toList()
         ),

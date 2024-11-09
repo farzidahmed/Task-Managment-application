@@ -80,7 +80,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     // Network response er jonno call
     NetworkResponse response = await NetworkCaller.postRequest(
         url: Urls.registration,
-        headers: {'Content-Type': 'application/json'},
+
     body: requestbody);
       print(requestbody);
     _inprogress = false;

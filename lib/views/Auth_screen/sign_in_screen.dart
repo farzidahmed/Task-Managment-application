@@ -148,7 +148,7 @@ class _SignInScreenState extends State<SignInScreen> {
     final NetworkResponse response =
         await NetworkCaller.postRequest(url: Urls.login,
             body: requestbody,
-            headers: {'Content-Type':'application/json'});
+           );
     _inProgress = true;
     setState(() {});
     //then ckh korbo response success ki nah ...

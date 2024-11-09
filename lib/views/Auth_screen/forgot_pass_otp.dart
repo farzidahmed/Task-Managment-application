@@ -81,14 +81,14 @@ class _ForgotPassOtpState extends State<ForgotPassOtp> {
             inactiveColor: Colors.white,
             inactiveFillColor:Colors.white ,
           ),
-          animationDuration: Duration(milliseconds: 300),
+          animationDuration: const Duration(milliseconds: 300),
           // backgroundColor: Colors.blue.shade50,
           backgroundColor: Colors.transparent,
 
           enableActiveFill: true,
            appContext: context,
         ),
-         SizedBox(height: 16,),
+         const SizedBox(height: 16,),
         ElevatedButton(
             onPressed:_onTapNextPage,
             child: const Icon(Icons.arrow_circle_right_outlined)),
@@ -104,7 +104,7 @@ class _ForgotPassOtpState extends State<ForgotPassOtp> {
   // don't have an account er text
   Widget  _buildforgotPassSection(){
     return  RichText(text:  TextSpan(
-        style: TextStyle(
+        style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 14,
@@ -114,7 +114,7 @@ class _ForgotPassOtpState extends State<ForgotPassOtp> {
         children: [
           TextSpan(
               text: "Sign In ",
-              style: TextStyle(color: Appscolor.themecolor),
+              style: const TextStyle(color: Appscolor.themecolor),
               recognizer: TapGestureRecognizer()
                 ..onTap = _onTapforgotPass
           )

@@ -134,7 +134,7 @@ class _SignInScreenForgotPasswordEmailState extends State<ForgotPasswordEmail> {
     _inprogrss = true;
     setState(() {});
     final NetworkResponse response =
-        await NetworkCaller.getRequest(url: '${Urls.recoververifymail}/rimonraj670@gmail.com',);
+        await NetworkCaller.getRequest(url: '${Urls.recoververifymail}/${_emailaddress.text}',);
 _inprogrss=false;
 setState(() {
 

@@ -13,7 +13,7 @@ class CanceledScreen extends StatefulWidget {
 class _CanceledScreenState extends State<CanceledScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body:  Column(
         children: [
           // task list card

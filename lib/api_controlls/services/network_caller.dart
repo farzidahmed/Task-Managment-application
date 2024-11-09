@@ -23,8 +23,12 @@ class NetworkCaller {
     try {
       //kih data gelo ta check korar jonno
       Uri uri = Uri.parse(url);
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'token': AuthController.accessToken.toString(),
+      };
       debugPrint("$url");
-      final Response response = await get(uri);
+      final Response response = await get(uri,headers: headers);
       printDebug(url, response);
       if (response.statusCode == 200) {
         final decodeData = jsonDecode(response.body);
@@ -58,7 +62,7 @@ class NetworkCaller {
   static Future<NetworkResponse> postRequest(
       {required String url,
       Map<String, dynamic>? body,
-      required Map<String, String?> headers}) async {
+       }) async {
     try {
       //api te kih data gelo ta check korar jonno
       Uri uri = Uri.parse(url);
