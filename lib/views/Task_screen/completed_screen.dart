@@ -45,7 +45,7 @@ class _ComletedScreenState extends State<CompletedScreen> {
                     return task_list_card(
                       buttonname: 'Completed',
                       chipcolor: Colors.greenAccent,
-                      taskModel: _completedtasklist[index],
+                      taskModel: _completedtasklist[index], onrefress: _getCompletedTaskList,
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {

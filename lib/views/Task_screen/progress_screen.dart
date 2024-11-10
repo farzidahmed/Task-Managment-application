@@ -17,7 +17,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
       body:  Column(
         children: [
           // task list card
-          task_list_card(buttonname: 'progress', chipcolor: Colors.purpleAccent,bordersidecolor: Colors.black,)
+          // task_list_card(buttonname: 'progress', chipcolor: Colors.purpleAccent,bordersidecolor: Colors.black,)
         ],
       ),
 

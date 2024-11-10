@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:task_managment/api_controlls/models/network_responce.dart';
 import 'package:task_managment/api_controlls/models/task_model.dart';
+import 'package:task_managment/api_controlls/services/network_caller.dart';
+import 'package:task_managment/global_widget/snakbar_message.dart';
+import 'package:task_managment/utills/urls.dart';
 import '../utills/apps_colors.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
@@ -9,18 +13,21 @@ class task_list_card extends StatefulWidget {
     required this.buttonname,
     required this.chipcolor,
     this.bordersidecolor,
-       this.taskModel
+       required this.taskModel, required this.onrefress
   });
   final String buttonname;
   final Color chipcolor;
   final Color? bordersidecolor;
-  final TaskModel? taskModel;
+  final TaskModel taskModel;
+  final VoidCallback onrefress;
   @override
   State<task_list_card> createState() => _task_list_cardState();
 }
 
 class _task_list_cardState extends State<task_list_card> {
   String _selectedStatus ="";
+  bool _changeStatusInprogress=false;
+
 
   @override
   void initState() {
@@ -41,7 +48,7 @@ class _task_list_cardState extends State<task_list_card> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                  widget.taskModel?.title??"",
+                  widget.taskModel.title??"",
                     style: Theme.of(context)
                         .textTheme
                         .titleMedium
@@ -51,11 +58,11 @@ class _task_list_cardState extends State<task_list_card> {
                     height: 12,
                   ),
                    Text(
-                      widget.taskModel?.description??""),
+                      widget.taskModel.description??""),
                   const SizedBox(
                     height: 8,
                   ),
-                   Text(widget.taskModel?.createdDate??""),
+                   Text(widget.taskModel.createdDate??""),
                   _buildRowChip()
                 ],
               ),
@@ -106,6 +113,7 @@ class _task_list_cardState extends State<task_list_card> {
 
   //edit Icon button
   void _buildEditIconButton() {
+    print(_selectedStatus);
     //TODO: implements build edit icon button
     showDialog(context: context, builder: (context){
       return AlertDialog(
@@ -126,7 +134,10 @@ class _task_list_cardState extends State<task_list_card> {
             children: [
             'New','Completed','Canceled','Progress'].map((e){
               return ListTile(
-                onTap: (){},
+                onTap: (){
+                  _changeStatus(e);
+                  Navigator.pop(context);
+                },
                 title:Text (e),
                 selected: _selectedStatus==e,
                 trailing: _selectedStatus==e? Icon(Icons.check):null,
@@ -162,11 +173,6 @@ class _task_list_cardState extends State<task_list_card> {
               child: const Text("Cancel",style: TextStyle(
                 fontSize: 16
               ),)),
-          TextButton(onPressed:(){
-          },
-              child: const Text("okay",style: TextStyle(
-                  fontSize: 20
-              ),)),
 
         ],
       );
@@ -176,5 +182,19 @@ class _task_list_cardState extends State<task_list_card> {
 //delete Icon button
   void _buildDeletetIconButton() {
     //TODO: implements build edit icon button
+  }
+  Future<void> _changeStatus (String newstatus )async{
+      _changeStatusInprogress=true;
+      setState(() {
+      });
+      final NetworkResponse response = await NetworkCaller.getRequest(url:Urls.changeStatus(widget.taskModel.sId!, newstatus));
+      if(response.isSuccess){
+          widget.onrefress();
+      }else{
+        _changeStatusInprogress=false;
+        setState(() {
+        });
+        snakbarmessage(context, response.errormessege);
+      }
   }
 }

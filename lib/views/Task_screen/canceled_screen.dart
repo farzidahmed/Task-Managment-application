@@ -17,7 +17,7 @@ class _CanceledScreenState extends State<CanceledScreen> {
       body:  Column(
         children: [
           // task list card
-          task_list_card(buttonname: 'Canceled', chipcolor: Colors.redAccent,bordersidecolor: Colors.white,)
+          // task_list_card(buttonname: 'Canceled', chipcolor: Colors.redAccent,bordersidecolor: Colors.white,)
         ],
       ),
 

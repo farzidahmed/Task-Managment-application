@@ -73,7 +73,8 @@ class _NewScreenState extends State<NewScreen> {
                   itemBuilder: (context, index) {
                     return task_list_card(
                       buttonname: 'New',
-                      chipcolor: Colors.greenAccent,taskModel: _newtasklist[index],
+                      chipcolor: Colors.greenAccent,taskModel: _newtasklist[index], onrefress: _getNewTaskList,
+
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
