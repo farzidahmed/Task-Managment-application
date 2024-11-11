@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:task_managment/api_controlls/models/network_responce.dart';
+import 'package:task_managment/api_controlls/models/taskStatusCount.dart';
 import 'package:task_managment/api_controlls/models/task_list_model.dart';
 import 'package:task_managment/api_controlls/models/task_model.dart';
+import 'package:task_managment/api_controlls/models/task_status_model.dart';
 import 'package:task_managment/api_controlls/services/network_caller.dart';
 import 'package:task_managment/global_widget/snakbar_message.dart';
 import 'package:task_managment/utills/urls.dart';
@@ -19,13 +21,15 @@ class NewScreen extends StatefulWidget {
 
 class _NewScreenState extends State<NewScreen> {
   bool _getNewTaskInprogress = false;
+  bool _getTaskCountInprogress = false;
   List<TaskModel> _newtasklist = [];
+  List<TaskStatusModel> _taskStatusCountlist = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _getNewTaskList();
+    _getNewTask();
   }
 
   @override
@@ -33,36 +37,12 @@ class _NewScreenState extends State<NewScreen> {
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: ()async{
-          _getNewTaskList();
+          _getNewTask();
+          _getTaskCount();
         },
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    task_sumerry_card(
-                      count: 5,
-                      titile: "New",
-                    ),
-                    task_sumerry_card(
-                      count: 10,
-                      titile: "Completed",
-                    ),
-                    task_sumerry_card(
-                      count: 10,
-                      titile: "Canceled",
-                    ),
-                    task_sumerry_card(
-                      count: 10,
-                      titile: "Progress",
-                    )
-                  ],
-                ),
-              ),
-            ),
+            _buildsummerysetion(),
             // task list card
             Expanded(
               child: Visibility(
@@ -73,7 +53,7 @@ class _NewScreenState extends State<NewScreen> {
                   itemBuilder: (context, index) {
                     return task_list_card(
                       buttonname: 'New',
-                      chipcolor: Colors.greenAccent,taskModel: _newtasklist[index], onrefress: _getNewTaskList,
+                      chipcolor: Colors.greenAccent,taskModel: _newtasklist[index], onrefress: _getNewTask,
 
                     );
                   },
@@ -92,18 +72,36 @@ class _NewScreenState extends State<NewScreen> {
       ),
     );
   }
-
+  Widget _buildsummerysetion(){
+   return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children:
+            _getTaskSummeryCardList()
+        ),
+      ),
+    );
+  }
+  List<Tasksummerycard> _getTaskSummeryCardList(){
+    List<Tasksummerycard> taskSummeryCard=[];
+    for(TaskStatusModel t in _taskStatusCountlist ){
+      taskSummeryCard.add(Tasksummerycard(titile: t.sId!, count: t.sum!));
+    }
+    return taskSummeryCard;
+  }
   //floatactionbutton
   Future<void> _buildAddScreen()async {
     final bool? shouldRefresh =await
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const AddTaskScreen()));
     if(shouldRefresh==true){
-      _getNewTaskList();
+      _getNewTask();
     }
   }
 
-  Future<void> _getNewTaskList() async {
+  Future<void> _getNewTask() async {
     _newtasklist.clear();
     _getNewTaskInprogress = true;
     setState(() {});
@@ -119,6 +117,25 @@ class _NewScreenState extends State<NewScreen> {
       snakbarmessage(context, response.errormessege);
     }
     _getNewTaskInprogress = false;
+    setState(() {});
+  }
+
+  Future<void> _getTaskCount() async {
+    _taskStatusCountlist.clear();
+    _getTaskCountInprogress = true;
+    setState(() {});
+
+    final NetworkResponse response =
+        await NetworkCaller.getRequest(url: Urls.taskstatuscount);
+
+    if (response.isSuccess) {
+      final TaskStatusCountModel taskStatusCountModel =
+          TaskStatusCountModel.fromJson(response.responseData);
+      _taskStatusCountlist = taskStatusCountModel.taskStatusCountList ?? [];
+    } else {
+      snakbarmessage(context, response.errormessege);
+    }
+    _getTaskCountInprogress = false;
     setState(() {});
   }
 }

@@ -27,6 +27,7 @@ class task_list_card extends StatefulWidget {
 class _task_list_cardState extends State<task_list_card> {
   String _selectedStatus ="";
   bool _changeStatusInprogress=false;
+  bool _deleteStatusInprogress=false;
 
 
   @override
@@ -98,15 +99,23 @@ class _task_list_cardState extends State<task_list_card> {
   Widget wrap_Icon_Button() {
     return Wrap(
         children: [
-          IconButton(
-              onPressed: _buildEditIconButton,
-              icon: const Icon(Icons.edit, color: Colors.green)),
-          IconButton(
-              onPressed: _buildDeletetIconButton,
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.red,
-              )),
+          Visibility(
+            visible: _changeStatusInprogress==false,
+            replacement: const CircularProgressIndicator(),
+            child: IconButton(
+                onPressed: _buildEditIconButton,
+                icon: const Icon(Icons.edit, color: Colors.green)),
+          ),
+          Visibility(
+            visible: _deleteStatusInprogress==false,
+            replacement: const CircularProgressIndicator(),
+            child: IconButton(
+                onPressed: _buildDeletetIconButton,
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                )),
+          ),
         ],
       );
   }
@@ -140,7 +149,7 @@ class _task_list_cardState extends State<task_list_card> {
                 },
                 title:Text (e),
                 selected: _selectedStatus==e,
-                trailing: _selectedStatus==e? Icon(Icons.check):null,
+                trailing: _selectedStatus==e? const Icon(Icons.check):null,
               );
           }).toList()
         ),
@@ -180,8 +189,19 @@ class _task_list_cardState extends State<task_list_card> {
   }
 
 //delete Icon button
-  void _buildDeletetIconButton() {
-    //TODO: implements build edit icon button
+  Future<void> _buildDeletetIconButton() async {
+    _deleteStatusInprogress=true;
+    setState(() {
+    });
+    final NetworkResponse response = await NetworkCaller.getRequest(url:Urls.deleteTask(widget.taskModel.sId!));
+    if(response.isSuccess){
+      widget.onrefress();
+    }else{
+      _deleteStatusInprogress=false;
+      setState(() {
+      });
+      snakbarmessage(context, response.errormessege);
+    }
   }
   Future<void> _changeStatus (String newstatus )async{
       _changeStatusInprogress=true;

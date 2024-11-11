@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class task_sumerry_card extends StatelessWidget {
-  const task_sumerry_card({
+class Tasksummerycard extends StatelessWidget {
+  const Tasksummerycard({
     super.key, required this.titile, required this.count,
   });
   final String titile;
