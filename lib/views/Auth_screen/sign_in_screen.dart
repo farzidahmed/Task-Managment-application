@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:task_managment/api_controlls/models/login_model.dart';
 import 'package:task_managment/api_controlls/models/network_responce.dart';
 import 'package:task_managment/api_controlls/services/network_caller.dart';
 import 'package:task_managment/global_widget/background_image.dart';
@@ -154,7 +155,9 @@ class _SignInScreenState extends State<SignInScreen> {
     //then ckh korbo response success ki nah ...
     // jodi success hoy tahole navigator kore dibo
     if(response.statusCode==200){
-      await AuthController.saveAccessData(response.responseData['token']);//response datate je token ta ache oita amra save korbo
+      LoginModel loginModel = LoginModel.fromJson(response.responseData);
+      await AuthController.saveAccessData(loginModel.token!);//response datate je token ta ache oita amra save korbo
+      await AuthController.saveUserdata(loginModel.data!);//response datate je token ta ache oita amra save korbo
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const NavbarScreen()),
