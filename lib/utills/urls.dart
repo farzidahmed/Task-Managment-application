@@ -4,6 +4,8 @@ class Urls {
   static const String registration = '$_baseurl/Registration';
   static const String login = '$_baseurl/Login';
   static const String createtask = '$_baseurl/createTask';
+  static const String profileupdate = '$_baseurl/ProfileUpdate';
+  static const String pinrecovery = '$_baseurl/RecoverResetPassword';
 
   //get api
   static const String recoververifymail = '$_baseurl/RecoverVerifyEmail';

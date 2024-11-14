@@ -1,7 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:task_managment/api_controlls/models/login_user_model.dart';
+import 'package:task_managment/api_controlls/models/network_responce.dart';
+import 'package:task_managment/api_controlls/services/network_caller.dart';
 import 'package:task_managment/controller/auth_controller.dart';
 import 'package:task_managment/global_widget/background_image.dart';
+import 'package:task_managment/global_widget/snakbar_message.dart';
+import 'package:task_managment/utills/urls.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -11,17 +18,17 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
   final TextEditingController _textEmaillController = TextEditingController();
-  final TextEditingController _textFirstNameController = TextEditingController();
+  final TextEditingController _textFirstNameController =
+      TextEditingController();
   final TextEditingController _textLastNameController = TextEditingController();
   final TextEditingController _textMobileController = TextEditingController();
   final TextEditingController _textpasswordController = TextEditingController();
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
-  XFile ?_selectedimage;
+  XFile? _selectedimage;
 
-  bool _updateProfileInprogress=false;
+  bool _updateProfileInprogress = false;
 
   @override
   void initState() {
@@ -43,43 +50,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
         resizeToAvoidBottomInset: false,
         body: BackgroundImage(
             child: Center(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(
-                    left: 10.0,
-                    right: 10.0,
-                    top: 10.0,
-                    bottom: 10.0 + MediaQuery
-                        .of(context)
-                        .viewInsets
-                        .bottom),
-                child: Padding(
-                  padding: const EdgeInsets.all(50),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Update Profile ",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .displaySmall
-                            ?.copyWith(fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      _buildPhotoTaker(),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      _buildUpdateProfileForm(),
-                      //return widgrt method signin form
-                      const SizedBox(height: 30),
-                    ],
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bottom: 10.0 + MediaQuery.of(context).viewInsets.bottom),
+            child: Padding(
+              padding: const EdgeInsets.all(50),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Update Profile ",
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall
+                        ?.copyWith(fontWeight: FontWeight.w500),
                   ),
-                ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  _buildPhotoTaker(),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  _buildUpdateProfileForm(),
+                  //return widgrt method signin form
+                  const SizedBox(height: 30),
+                ],
               ),
-            )));
+            ),
+          ),
+        )));
   }
 
 // textformfiled er text
@@ -93,6 +96,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             controller: _textEmaillController,
             keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(hintText: "Email"),
+            validator: (String? value) {
+              if (value?.isEmpty == true) {
+                return 'Enter a valid email';
+              }
+              return null;
+            },
           ),
           const SizedBox(
             height: 16,
@@ -100,6 +109,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           TextFormField(
             controller: _textFirstNameController,
             decoration: const InputDecoration(hintText: "First Name"),
+            validator: (String? value) {
+              if (value?.isEmpty == true) {
+                return 'Please enter your first name';
+              }
+              return null;
+            },
           ),
           const SizedBox(
             height: 16,
@@ -107,6 +122,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           TextFormField(
             controller: _textLastNameController,
             decoration: const InputDecoration(hintText: "Last Name"),
+            validator: (String? value) {
+              if (value?.isEmpty == true) {
+                return 'Please enter your last name';
+              }
+              return null;
+            },
           ),
           const SizedBox(
             height: 16,
@@ -115,19 +136,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
             controller: _textMobileController,
             keyboardType: TextInputType.phone,
             decoration: const InputDecoration(hintText: "Mobile"),
+            validator: (String? value) {
+              if (value?.isEmpty == true) {
+                return 'Enter a valid Mobile number';
+              }
+              return null;
+            },
           ),
           const SizedBox(
             height: 16,
           ),
-          TextFormField(controller: _textpasswordController,
+          TextFormField(
+            controller: _textpasswordController,
             decoration: const InputDecoration(hintText: "password"),
           ),
           const SizedBox(
             height: 16,
           ),
-          ElevatedButton(
-              onPressed: _onTapNextPage,
-              child: const Icon(Icons.arrow_circle_right_outlined)),
+          Visibility(
+            visible: _updateProfileInprogress==false,
+            replacement: const CircularProgressIndicator(),
+            child: ElevatedButton(
+                onPressed: _onTapNextPage,
+                child: const Icon(Icons.arrow_circle_right_outlined)),
+          ),
         ],
       ),
     );
@@ -135,8 +167,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _onTapNextPage() {
     // TODO:implementation on tap next page
-    if (_formkey.currentState!.validate()) {}
+    if (_formkey.currentState!.validate()) {
+      _getupdateProfile();
+    }
   }
+
   //image piker er jonno widget
   Widget _buildPhotoTaker() {
     return GestureDetector(
@@ -159,46 +194,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 child: const Center(
                     child: Text(
-                      "Photo ",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    )),
+                  "Photo ",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                )),
               ),
-              SizedBox(width: 8,),
+              const SizedBox(
+                width: 8,
+              ),
               Text(_getselectedimage())
             ],
           )),
     );
   }
 
-  String _getselectedimage(){
-    if(_selectedimage != null){
+  String _getselectedimage() {
+    if (_selectedimage != null) {
       return _selectedimage!.name;
     }
     return 'selectedimage';
   }
 
   //api caller
-  Future<void> _getupdateProfile()async{
-      _updateProfileInprogress=true;
-      setState(() {
-      });
-      Map<String,dynamic> requestbody={
-        "email":_textEmaillController.text.trim(),
-        "firstName":_textFirstNameController.text.trim(),
-        "lastName":_textLastNameController.text.trim(),
-        "mobile":_textMobileController.text.trim(),
-      };
+  Future<void> _getupdateProfile() async {
+    _updateProfileInprogress = true;
+    setState(() {});
+    Map<String, dynamic> requestbody = {
+      "email": _textEmaillController.text.trim(),
+      "firstName": _textFirstNameController.text.trim(),
+      "lastName": _textLastNameController.text.trim(),
+      "mobile": _textMobileController.text.trim(),
+    };
 
-      if(_textpasswordController.text.isNotEmpty){
+    if (_textpasswordController.text.isNotEmpty) {
+      requestbody['Password'] = _textpasswordController.text;
+    }
 
-      }
+    if (_selectedimage != null) {
+      List<int> imageBytes = await _selectedimage!.readAsBytes();
+      String convertedImgage = base64Encode(imageBytes);
+      requestbody['Photo'] = convertedImgage;
+    }
+
+    final NetworkResponse response = await NetworkCaller.postRequest(
+        url: Urls.profileupdate, body: requestbody);
+    _updateProfileInprogress = true;
+    setState(() {});
+    if (response.isSuccess) {
+      UserModel userModel =UserModel.fromJson(requestbody);
+      AuthController.saveUserdata(userModel);
+      snakbarmessage(context, "Profile has been updated");
+    } else {
+      snakbarmessage(context, response.errormessege);
+    }
   }
 
-  Future<void> _imagepicker()async{
-    ImagePicker imagepicker= ImagePicker();
-    XFile? pickedimage=await imagepicker.pickImage(source: ImageSource.gallery);
-  if(pickedimage!= null){
-    _selectedimage=pickedimage;
-  }
+  Future<void> _imagepicker() async {
+    ImagePicker imagepicker = ImagePicker();
+    XFile? pickedimage =
+        await imagepicker.pickImage(source: ImageSource.gallery);
+    if (pickedimage != null) {
+      _selectedimage = pickedimage;
+    }
   }
 }
