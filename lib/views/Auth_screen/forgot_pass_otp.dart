@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:task_managment/api_controlls/models/network_responce.dart';
 import 'package:task_managment/api_controlls/services/network_caller.dart';
+import 'package:task_managment/controller/auth_controller.dart';
 import 'package:task_managment/global_widget/background_image.dart';
 import 'package:task_managment/global_widget/snakbar_message.dart';
 import 'package:task_managment/utills/apps_colors.dart';
@@ -132,13 +133,16 @@ class _ForgotPassOtpState extends State<ForgotPassOtp> {
     setState(() {});
 
     final NetworkResponse response = await NetworkCaller.postRequest(
-        url: Urls.pinrecovery, body: {'pin': pin});
+        url: Urls.pinrecovery, body: {'pin': pin},);
 
     _pinInprogress = false;
     setState(() {});
     if (response.isSuccess) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const ResetPassword()));
+      String? token = await AuthController.getAccessData();
+      if (token != null) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const ResetPassword()));
+      }
     } else {
       snakbarmessage(context, response.errormessege);
     }
