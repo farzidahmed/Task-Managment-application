@@ -19,7 +19,7 @@ class NetworkCaller {
   //bar bar jate network response er instance create kora nah lage sei jnno amra static keywork bebohar kori
 // api get korar jonno
 // get/ post request a named{}use kora hoy jeno amra dekhte pari kih data pathano hoy
-  static Future<NetworkResponse> getRequest({required String url}) async {
+  static Future<NetworkResponse> getRequest( {required String url}) async {
     try {
       //kih data gelo ta check korar jonno
       Uri uri = Uri.parse(url);

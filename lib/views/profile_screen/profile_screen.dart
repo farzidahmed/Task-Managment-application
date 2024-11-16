@@ -9,6 +9,10 @@ import 'package:task_managment/controller/auth_controller.dart';
 import 'package:task_managment/global_widget/background_image.dart';
 import 'package:task_managment/global_widget/snakbar_message.dart';
 import 'package:task_managment/utills/urls.dart';
+import 'package:task_managment/views/Auth_screen/sign_in_screen.dart';
+
+import '../../global_widget/navbar_screen.dart';
+import '../Task_screen/new_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -169,7 +173,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // TODO:implementation on tap next page
     if (_formkey.currentState!.validate()) {
       _getupdateProfile();
-    }
+Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>NavbarScreen()), (value)=>false); }
   }
 
   //image piker er jonno widget
@@ -217,7 +221,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   //api caller
   Future<void> _getupdateProfile() async {
     _updateProfileInprogress = true;
-    setState(() {});
+
+    setState(() {
+    });
     Map<String, dynamic> requestbody = {
       "email": _textEmaillController.text.trim(),
       "firstName": _textFirstNameController.text.trim(),
@@ -237,9 +243,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     final NetworkResponse response = await NetworkCaller.postRequest(
         url: Urls.profileupdate, body: requestbody);
-    _updateProfileInprogress = true;
-    setState(() {});
+    setState(() {    _updateProfileInprogress = true;
+
+    });
     if (response.isSuccess) {
+      _cleartextfiled();
       UserModel userModel =UserModel.fromJson(requestbody);
       AuthController.saveUserdata(userModel);
       snakbarmessage(context, "Profile has been updated");
@@ -255,5 +263,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (pickedimage != null) {
       _selectedimage = pickedimage;
     }
+  }
+  void _cleartextfiled(){
+    _textEmaillController.clear();
+    _textFirstNameController.clear();
+    _textLastNameController.clear();
+    _textMobileController.clear();
   }
 }

@@ -83,7 +83,7 @@ class _ForgotPassOtpState extends State<ForgotPassOtp> {
             controller: _pinControllerText,
             keyboardType: TextInputType.number,
             length: 6,
-            obscureText: true,
+            obscureText:false,
             animationType: AnimationType.fade,
             pinTheme: PinTheme(
               shape: PinCodeFieldShape.box,
@@ -122,31 +122,34 @@ class _ForgotPassOtpState extends State<ForgotPassOtp> {
   void _onTapNextPage() {
     // TODO:implementation on tap next page
     if (_picformkey.currentState!.validate()) {
-      final pin = _pinControllerText.text;
-      verifypin(pin);
+      final email = _pinControllerText.text;
+      final otp = _pinControllerText.text;
+      _verifypin(email,otp);
     }
     return null;
   }
 
-  Future<void> verifypin(String pin) async {
+  Future<void> _verifypin(String email,otp) async {
     _pinInprogress = true;
     setState(() {});
-
-    final NetworkResponse response = await NetworkCaller.postRequest(
-        url: Urls.pinrecovery, body: {'pin': pin},);
-
+    final NetworkResponse response = await NetworkCaller.getRequest(url: Urls.otpVerify(email, otp));
+    debugPrint('API URL: ${Urls.otpVerify}/${_pinControllerText.text}'); // API URL চেক করতে প্রিন্ট
+    debugPrint('API Response: ${response.isSuccess}');
     _pinInprogress = false;
     setState(() {});
     if (response.isSuccess) {
-      String? token = await AuthController.getAccessData();
-      if (token != null) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ResetPassword()));
-      }
+      _clearfileds();
+      setState(() {
+      });
+      snakbarmessage(context, "sucessces ");
+     //  AuthController.getAccessData();
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const ResetPassword()));
     } else {
       snakbarmessage(context, response.errormessege);
     }
   }
+
 
   // don't have an account er text
   Widget _buildforgotPassSection() {
@@ -173,4 +176,7 @@ class _ForgotPassOtpState extends State<ForgotPassOtp> {
         MaterialPageRoute(builder: (context) => const SignInScreen()),
         (_) => false);
   }
-}
+
+  void _clearfileds(){
+    _pinControllerText.clear();
+  }}

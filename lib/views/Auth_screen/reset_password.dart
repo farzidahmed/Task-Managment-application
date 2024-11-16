@@ -14,6 +14,11 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
+
+  final TextEditingController _oldpasswordController=TextEditingController();
+  final TextEditingController _newpasswordController=TextEditingController();
+
+   final GlobalKey<FormState> _formkey= GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     TextTheme texttheme = Theme.of(context).textTheme;
@@ -61,26 +66,43 @@ class _ResetPasswordState extends State<ResetPassword> {
 
 // textformfiled er text
   Widget _buildresetPassForm (){
-    return    Column(
-      children: [
-        TextFormField(
-          keyboardType: TextInputType.emailAddress,
-          decoration: const InputDecoration(
-              hintText: "Password"
+    return    Form(
+    key: _formkey,
+      child: Column(
+        children: [
+          TextFormField(
+            controller: _oldpasswordController,
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(
+                hintText: "Password"
+            ),
+          validator: (String?value){
+              if(value?.isEmpty==true){
+                return "Enter a old value";
+              }
+              return null;
+          },
           ),
-        ),
-        const SizedBox(height: 16,),
-        TextFormField(
-          keyboardType: TextInputType.emailAddress,
-          decoration: const InputDecoration(
-              hintText: "Confirm Password"
+          const SizedBox(height: 16,),
+          TextFormField(
+            controller: _newpasswordController,
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(
+                hintText: "Confirm Password"
+            ),
+            validator: (String?value){
+              if(value?.isEmpty==true){
+                return "Enter a old value";
+              }
+              return null;
+            },
           ),
-        ),
-        const SizedBox(height: 24,),
-        ElevatedButton(
-            onPressed:_onTapNextPage,
-            child: const Icon(Icons.arrow_circle_right_outlined)),
-      ],
+          const SizedBox(height: 24,),
+          ElevatedButton(
+              onPressed:_onTapNextPage,
+              child: const Icon(Icons.arrow_circle_right_outlined)),
+        ],
+      ),
     );
   }
 

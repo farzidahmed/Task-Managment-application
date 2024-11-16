@@ -9,6 +9,7 @@ class Urls {
 
   //get api
   static const String recoververifymail = '$_baseurl/RecoverVerifyEmail';
+  static  String otpVerify(String email,otp)=>'$_baseurl/RecoverVerifyOtp/$email/$otp';
   static const String newtasklist = '$_baseurl/listTaskByStatus/New';
   static const String completedtasklist = '$_baseurl/listTaskByStatus/Completed';
   static const String canceledtasklist = '$_baseurl/listTaskByStatus/Canceled';
