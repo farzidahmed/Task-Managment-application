@@ -118,7 +118,7 @@ class _SignInScreenState extends State<SignInScreen> {
             height: 16,
           ),
           Visibility(
-            visible: !_inProgress,
+            visible: _inProgress==false,
             replacement: const CircularProgressIndicator(),
             child: ElevatedButton(
                 onPressed: _onTapNextPage,
