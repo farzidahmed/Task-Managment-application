@@ -121,7 +121,7 @@ class _SignInScreenForgotPasswordEmailState extends State<ForgotPasswordEmail> {
   void _onTapNextPage() {
     if (_formkey.currentState!.validate()) {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const ForgotPassOtp()));
+          MaterialPageRoute(builder: (context) =>  ForgotPassOtp(email:_emailaddress.text ,)));
       _mailverify();
     } else {
       snakbarmessage(context, "Please enter a valid mail");

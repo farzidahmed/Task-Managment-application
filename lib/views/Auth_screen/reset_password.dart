@@ -107,8 +107,10 @@ class _ResetPasswordState extends State<ResetPassword> {
   }
 
   void _onTapNextPage(){
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPassOtp()));
     // TODO:implementation on tap next page
+    if(_formkey.currentState!.validate()){
+      
+    }
   }
 
   // don't have an account er text

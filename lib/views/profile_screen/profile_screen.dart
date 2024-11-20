@@ -158,7 +158,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             height: 16,
           ),
           Visibility(
-            visible: _updateProfileInprogress==false,
+            visible: _updateProfileInprogress == false,
             replacement: const CircularProgressIndicator(),
             child: ElevatedButton(
                 onPressed: _onTapNextPage,
@@ -173,7 +173,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // TODO:implementation on tap next page
     if (_formkey.currentState!.validate()) {
       _getupdateProfile();
-Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>NavbarScreen()), (value)=>false); }
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => NavbarScreen()),
+          (value) => false);
+    }
   }
 
   //image piker er jonno widget
@@ -222,8 +226,7 @@ Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Navb
   Future<void> _getupdateProfile() async {
     _updateProfileInprogress = true;
 
-    setState(() {
-    });
+    setState(() {});
     Map<String, dynamic> requestbody = {
       "email": _textEmaillController.text.trim(),
       "firstName": _textFirstNameController.text.trim(),
@@ -232,23 +235,23 @@ Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Navb
     };
 
     if (_textpasswordController.text.isNotEmpty) {
-      requestbody['Password'] = _textpasswordController.text;
+      requestbody['password'] = _textpasswordController.text;
     }
 
     if (_selectedimage != null) {
       List<int> imageBytes = await _selectedimage!.readAsBytes();
       String convertedImgage = base64Encode(imageBytes);
-      requestbody['Photo'] = convertedImgage;
+      requestbody['photo'] = convertedImgage;
     }
 
     final NetworkResponse response = await NetworkCaller.postRequest(
         url: Urls.profileupdate, body: requestbody);
-    setState(() {    _updateProfileInprogress = true;
-
+    setState(() {
+      _updateProfileInprogress = true;
     });
     if (response.isSuccess) {
       _cleartextfiled();
-      UserModel userModel =UserModel.fromJson(requestbody);
+      UserModel userModel = UserModel.fromJson(requestbody);
       AuthController.saveUserdata(userModel);
       snakbarmessage(context, "Profile has been updated");
     } else {
@@ -264,7 +267,8 @@ Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Navb
       _selectedimage = pickedimage;
     }
   }
-  void _cleartextfiled(){
+
+  void _cleartextfiled() {
     _textEmaillController.clear();
     _textFirstNameController.clear();
     _textLastNameController.clear();

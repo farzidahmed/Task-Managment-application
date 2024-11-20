@@ -13,8 +13,9 @@ import 'package:task_managment/views/Auth_screen/reset_password.dart';
 import 'sign_in_screen.dart';
 
 class ForgotPassOtp extends StatefulWidget {
-  const ForgotPassOtp({super.key});
+  const ForgotPassOtp({super.key, required this.email});
 
+  final String email;
   @override
   State<ForgotPassOtp> createState() => _ForgotPassOtpState();
 }
@@ -122,7 +123,7 @@ class _ForgotPassOtpState extends State<ForgotPassOtp> {
   void _onTapNextPage() {
     // TODO:implementation on tap next page
     if (_picformkey.currentState!.validate()) {
-      final email = _pinControllerText.text;
+      final email = widget.email;
       final otp = _pinControllerText.text;
       _verifypin(email,otp);
     }
