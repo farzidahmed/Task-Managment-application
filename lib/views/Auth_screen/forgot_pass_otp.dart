@@ -145,7 +145,7 @@ class _ForgotPassOtpState extends State<ForgotPassOtp> {
       snakbarmessage(context, "sucessces ");
      //  AuthController.getAccessData();
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const ResetPassword()));
+          MaterialPageRoute(builder: (context) =>  ResetPassword(email: email, otp: otp,)));
     } else {
       snakbarmessage(context, response.errormessege);
     }
