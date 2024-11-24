@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:task_managment/views/Splash_screen/splash_screen.dart';
+import 'package:get/get.dart';
+import 'package:task_managment/ui/global_widget/navbar_screen.dart';
+import 'package:task_managment/ui/utills/apps_colors.dart';
+import 'package:task_managment/ui/views/Splash_screen/splash_screen.dart';
 
-import 'utills/apps_colors.dart';
+
+import 'controller_binder.dart';
 
 class TaskManagment extends StatefulWidget {
   const TaskManagment({super.key});
@@ -14,7 +18,7 @@ class TaskManagment extends StatefulWidget {
 class _TaskManagmentState extends State<TaskManagment> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       navigatorKey: TaskManagment.navigatorkey,
       theme: ThemeData(
         colorSchemeSeed: Appscolor.themecolor,
@@ -22,8 +26,14 @@ class _TaskManagmentState extends State<TaskManagment> {
         inputDecorationTheme:_inputDecorationTheme(),
         elevatedButtonTheme: _elevatedButtonThemeData()
       ),
-      home:const SplashScreen(),
       debugShowCheckedModeBanner: false,
+      initialBinding: ControllerBinder(),
+      initialRoute: '/',
+      routes: {
+        SplashScreen.name:(context)=> const SplashScreen(),
+        NavbarScreen.name:(context)=> const NavbarScreen(),
+
+      },
     );
 
   }
